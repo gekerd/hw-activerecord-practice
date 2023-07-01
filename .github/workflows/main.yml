@@ -1,0 +1,26 @@
+name: build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      CCTR: ./cc-test-reporter
+      BUNDLE_WITHOUT: production
+      TZ: America/Los_Angeles
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install Ruby (2.6)
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.6.6
+        bundler-cache: true
+        
+    - name: Install dependencies
+      run: |
+        bundle install
+        
+    - name: run RSpec tests
+      run: |
+        bundle exec rspec spec/activerecord_practice_spec.rb
